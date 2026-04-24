@@ -35,6 +35,7 @@ void handleUpdate() {
         Serial.printf("Update: %s\n", upload.filename.c_str());
         
         // TODO: 任務 2 - 解析標頭前 1K 檢查版本 (Anti-rollback)
+        // 提示: 如果版本過舊，請調用 Update.abort()
         // TODO: 任務 3 - 檢查硬體型號 (Hardware Affinity)
         
         if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
