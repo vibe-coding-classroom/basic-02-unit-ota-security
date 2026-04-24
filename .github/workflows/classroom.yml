@@ -1,0 +1,83 @@
+name: GitHub Classroom Autograding
+on: [push]
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: ${{ runner.os }}-platformio
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install PlatformIO
+        run: |
+          python -m pip install --upgrade pip
+          pip install platformio
+
+      - name: Compile Project
+        id: compile
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "Compilation Check"
+          setup-command: "pio pkg install"
+          command: "pio run"
+          timeout: 10
+          max-score: 40
+
+      - name: Check Security Implementation (Auth)
+        id: auth-check
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "Security Logic: Preferences & Authentication"
+          command: "grep -E 'preferences\\.begin' src/main.cpp && grep -E 'server\\.authenticate' src/main.cpp"
+          timeout: 2
+          max-score: 20
+
+      - name: Check Security Implementation (Anti-rollback)
+        id: rollback-check
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "Security Logic: Anti-rollback & Abort"
+          command: "grep -E 'Update\\.abort' src/main.cpp"
+          timeout: 2
+          max-score: 20
+
+      - name: Check Documentation
+        id: docs-check
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "Documentation: Security Audit Report"
+          command: "test -f docs/SecurityTest.md"
+          timeout: 2
+          max-score: 20
+
+      - name: Autograding Reporter
+        uses: education/autograding-grading-reporter@v1
+        env:
+          COMPILE_RESULTS: "${{steps.compile.outputs.result}}"
+          AUTH-CHECK_RESULTS: "${{steps.auth-check.outputs.result}}"
+          ROLLBACK-CHECK_RESULTS: "${{steps.rollback-check.outputs.result}}"
+          DOCS-CHECK_RESULTS: "${{steps.docs-check.outputs.result}}"
+        with:
+          runners: compile,auth-check,rollback-check,docs-check
