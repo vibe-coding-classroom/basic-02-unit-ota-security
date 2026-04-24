@@ -46,7 +46,7 @@ jobs:
           max-score: 40
 
       - name: Check Security Implementation (Auth)
-        id: auth-check
+        id: auth_check
         uses: education/autograding-command-grader@v1
         with:
           test-name: "Security Logic: Preferences & Authentication"
@@ -55,7 +55,7 @@ jobs:
           max-score: 20
 
       - name: Check Security Implementation (Anti-rollback)
-        id: rollback-check
+        id: rollback_check
         uses: education/autograding-command-grader@v1
         with:
           test-name: "Security Logic: Anti-rollback & Abort"
@@ -64,7 +64,7 @@ jobs:
           max-score: 20
 
       - name: Check Documentation
-        id: docs-check
+        id: docs_check
         uses: education/autograding-command-grader@v1
         with:
           test-name: "Documentation: Security Audit Report"
@@ -76,8 +76,8 @@ jobs:
         uses: education/autograding-grading-reporter@v1
         env:
           COMPILE_RESULTS: "${{steps.compile.outputs.result}}"
-          AUTH-CHECK_RESULTS: "${{steps.auth-check.outputs.result}}"
-          ROLLBACK-CHECK_RESULTS: "${{steps.rollback-check.outputs.result}}"
-          DOCS-CHECK_RESULTS: "${{steps.docs-check.outputs.result}}"
+          AUTH_CHECK_RESULTS: "${{steps.auth_check.outputs.result}}"
+          ROLLBACK_CHECK_RESULTS: "${{steps.rollback_check.outputs.result}}"
+          DOCS_CHECK_RESULTS: "${{steps.docs_check.outputs.result}}"
         with:
-          runners: compile,auth-check,rollback-check,docs-check
+          runners: "compile,auth_check,rollback_check,docs_check"
