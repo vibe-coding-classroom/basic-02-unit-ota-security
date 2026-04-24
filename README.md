@@ -1,5 +1,3 @@
-Viewed basic-02-unit-ota-security.html:1-394
-
 針對 **`basic-02-unit-ota-security` (OTA 安全性：密碼保護與版本檢查)** 單元，這是將物聯網裝置從「實驗室雛型」提升到「商業級產品」的必經之路。它要求學員具備 **防禦性程式設計 (Defensive Programming)** 的觀念，學習如何透過身份驗證、語義化版本控制與硬體型號鎖定，為裝置建立起牢不可破的安全護城河。
 
 以下是在 **GitHub Classroom** 部署其作業 (Assignments) 的具體建議：
